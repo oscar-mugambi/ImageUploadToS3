@@ -48,7 +48,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage, fileFilter, limits: { fileSize: 10000000 } });
 app.post('/upload', upload.array('file'), (req, res) => {
   res.json({
     status: 'success',
