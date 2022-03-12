@@ -55,4 +55,14 @@ app.post('/upload', upload.array('file'), (req, res) => {
   });
 });
 
+app.use((error, req, res, next) => {
+  if (error instanceof multer.MulterError) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      return res.json({
+        message: 'file is too large',
+      });
+    }
+  }
+});
+
 app.listen(4000, () => console.log('listening on port 4000'));
