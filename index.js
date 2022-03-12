@@ -3,7 +3,7 @@ const multer = require('multer');
 const uuid = require('uuid').v4;
 const app = express();
 
-const upload = multer({ dest: 'uploads/' });
+// const upload = multer({ dest: 'uploads/' });
 
 // app.post('/upload', upload.single('file'), (req, res) => {
 //   res.json({
@@ -30,20 +30,18 @@ const upload = multer({ dest: 'uploads/' });
 
 //custom file name
 
-multer.diskStorage({
+const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads');
   },
-  filename:(req,file,cb){
-    cb(null, )
-  }
+  filename: (req, file, cb) => {
+    const { originalname } = file;
+    cb(null, `${uuid()}-${originalname}}`);
+  },
 });
-const multiUpload = upload.fields([
-  { name: 'avatar', maxCount: 1 },
-  { name: 'resume', maxCount: 1 },
-]);
 
-app.post('/upload', multiUpload, (req, res) => {
+const upload = multer({ storage });
+app.post('/upload', upload.array('file', 3), (req, res) => {
   res.json({
     status: 'success',
   });
