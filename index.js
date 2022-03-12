@@ -36,12 +36,20 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const { originalname } = file;
-    cb(null, `${uuid()}-${originalname}}`);
+    cb(null, `${uuid()}-${originalname}`);
   },
 });
 
-const upload = multer({ storage });
-app.post('/upload', upload.array('file', 3), (req, res) => {
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.split('/')[0] === 'image') {
+    cb(null, true);
+  } else {
+    cb(new Error('Wring file type'), false);
+  }
+};
+
+const upload = multer({ storage, fileFilter });
+app.post('/upload', upload.array('file'), (req, res) => {
   res.json({
     status: 'success',
   });
