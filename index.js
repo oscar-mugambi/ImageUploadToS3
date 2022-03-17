@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { v4 } = require('uuid');
+const { v4: uuid } = require('uuid');
 const app = express();
 
 const upload = multer({ dest: 'uploads/' });
@@ -34,6 +34,9 @@ multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads');
   },
+  filename:(req,file,cb){
+    cb(null, )
+  }
 });
 const multiUpload = upload.fields([
   { name: 'avatar', maxCount: 1 },
