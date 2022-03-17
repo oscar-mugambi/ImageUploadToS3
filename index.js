@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { v4: uuid } = require('uuid');
+const uuid = require('uuid').v4;
 const app = express();
 
 const upload = multer({ dest: 'uploads/' });
