@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const { v4 } = require('uuid');
 const app = express();
 
 const upload = multer({ dest: 'uploads/' });
@@ -16,6 +17,24 @@ const upload = multer({ dest: 'uploads/' });
 //   });
 // });
 
+// const multiUpload = upload.fields([
+//   { name: 'avatar', maxCount: 1 },
+//   { name: 'resume', maxCount: 1 },
+// ]);
+
+// app.post('/upload', multiUpload, (req, res) => {
+//   res.json({
+//     status: 'success',
+//   });
+// });
+
+//custom file name
+
+multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads');
+  },
+});
 const multiUpload = upload.fields([
   { name: 'avatar', maxCount: 1 },
   { name: 'resume', maxCount: 1 },
