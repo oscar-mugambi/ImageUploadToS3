@@ -10,7 +10,7 @@ const upload = multer({ dest: 'uploads' });
 //   });
 // });
 
-app.post('/upload', upload.array('file'), (req, res) => {
+app.post('/upload', upload.array('file', 3), (req, res) => {
   res.json({
     status: 'success',
   });
