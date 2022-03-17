@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const app = express();
 
-const upload = multer({ dest: 'uploads' });
+const upload = multer({ dest: 'uploads/' });
 
 // app.post('/upload', upload.single('file'), (req, res) => {
 //   res.json({
@@ -10,7 +10,18 @@ const upload = multer({ dest: 'uploads' });
 //   });
 // });
 
-app.post('/upload', upload.array('file', 3), (req, res) => {
+// app.post('/upload', upload.array('file', 3), (req, res) => {
+//   res.json({
+//     status: 'success',
+//   });
+// });
+
+const multiUpload = upload.fields([
+  { name: 'avatar', maxCount: 1 },
+  { name: 'resume', maxCount: 1 },
+]);
+
+app.post('/upload', multiUpload, (req, res) => {
   res.json({
     status: 'success',
   });
