@@ -30,15 +30,17 @@ const app = express();
 
 //custom file name
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads');
-  },
-  filename: (req, file, cb) => {
-    const { originalname } = file;
-    cb(null, `${uuid().slice(1, 5)}-${originalname}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads');
+//   },
+//   filename: (req, file, cb) => {
+//     const { originalname } = file;
+//     cb(null, `${uuid().slice(1, 5)}-${originalname}`);
+//   },
+// });
+
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.split('/')[0] === 'image') {
