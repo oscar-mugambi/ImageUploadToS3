@@ -44,7 +44,7 @@ const fileFilter = (req, file, cb) => {
   if (file.mimetype.split('/')[0] === 'image') {
     cb(null, true);
   } else {
-    cb(new Error('Wring file type'), false);
+    cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE'), false);
   }
 };
 
@@ -59,13 +59,21 @@ app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
     if (error.code === 'LIMIT_FILE_SIZE') {
       return res.json({
+        status: 400,
         message: 'file is too large',
       });
     }
 
     if (error.code === 'LIMIT_FILE_COUNT') {
       return res.json({
+        status: 400,
         message: 'file limit reached',
+      });
+    }
+    if (error.code === 'LIMIT_UNEXPECTED_FILE') {
+      return res.json({
+        status: 400,
+        message: 'file must be an image',
       });
     }
   }
