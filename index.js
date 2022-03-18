@@ -48,7 +48,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ storage, fileFilter, limits: { fileSize: 10000000 } });
+const upload = multer({ storage, fileFilter, limits: { fileSize: 1000000000, files: 2 } });
 app.post('/upload', upload.array('file'), (req, res) => {
   res.json({
     status: 'success',
@@ -60,6 +60,12 @@ app.use((error, req, res, next) => {
     if (error.code === 'LIMIT_FILE_SIZE') {
       return res.json({
         message: 'file is too large',
+      });
+    }
+
+    if (error.code === 'LIMIT_FILE_COUNT') {
+      return res.json({
+        message: 'file limit reached',
       });
     }
   }
