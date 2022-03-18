@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { s3Uploadv2 } = require('./s3Service');
+const { s3Uploadv2, s3Uploadv3 } = require('./s3Service');
 const uuid = require('uuid').v4;
 const app = express();
 
@@ -55,7 +55,7 @@ const upload = multer({ storage, fileFilter, limits: { fileSize: 1000000000, fil
 
 app.post('/upload', upload.array('file'), async (req, res) => {
   try {
-    const results = await s3Uploadv2(req.files);
+    const results = await s3Uploadv3(req.files[0]);
     res.json({
       status: 'success',
       results,
@@ -64,6 +64,17 @@ app.post('/upload', upload.array('file'), async (req, res) => {
     console.log(error);
   }
 });
+// app.post('/upload', upload.array('file'), async (req, res) => {
+//   try {
+//     const results = await s3Uploadv2(req.files);
+//     res.json({
+//       status: 'success',
+//       results,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 app.use((error, req, res, next) => {
   if (error instanceof multer.MulterError) {
