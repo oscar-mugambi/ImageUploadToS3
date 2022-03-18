@@ -36,7 +36,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const { originalname } = file;
-    cb(null, `${uuid()}-${originalname}`);
+    cb(null, `${uuid().slice(1, 5)}-${originalname}`);
   },
 });
 
@@ -65,4 +65,4 @@ app.use((error, req, res, next) => {
   }
 });
 
-app.listen(4000, () => console.log('listening on port 4000'));
+app.listen(4000, () => console.log('listening'));
